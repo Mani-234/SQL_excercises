@@ -150,7 +150,43 @@ Query
 
 
 16th Question
-  Show total salary paid per job_id
+    Show total salary paid per job_id
+Query
+        SELECT job_id, SUM(salary) AS total_salary
+        FROM employees
+        GROUP BY job_id;
+Explaination
+    SUM(salary) calculates the total salary per job. GROUP BY job_id groups employees by their job.
+
+17th Question
+    Find the department with the maximum total salary
+Query
+        SELECT department, SUM(salary) AS total_salary
+        FROM employees
+        GROUP BY department
+        ORDER BY total_salary DESC
+        LIMIT 1;
+Explaination
+    SUM(salary) calculates total salary per department. GROUP BY department groups employees by department. ORDER BY total_salary DESC sorts departments by total salary in descending order. LIMIT 1 returns the top department only.
+
+18th Question
+    Display departments with average salary above 60000
+Query
+        SELECT department, AVG(salary) AS average_salary
+        FROM employees
+        GROUP BY department
+        HAVING AVG(salary) > 60000;
+Explaination
+    AVG(salary) calculates the average salary per department. GROUP BY department groups results by department. HAVING filters those       groups where the average salary is greater than 60,000.
+
+19th Question
+    Count number of employees in each job group
+Query
+        
+    
+
+
+
 
 
 
