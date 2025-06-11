@@ -284,6 +284,114 @@ Query
 Explanation
     UPPER(column_name) converts text to uppercase. You can also concatenate full names if needed:
 
+27th Question
+    Concatenate first_name and last_name as 'Full Name'
+Query
+        SELECT 
+            CONCAT(first_name, ' ', last_name) AS `Full Name`
+        FROM employees;
+Explanation
+    CONCAT(first_name, ' ', last_name) is used to join the two names with a space and AS 'Full Name' gives the output column a readable label.
+
+28th Question
+    Show the length of each employee's first name
+Query
+        SELECT 
+            first_name,
+            LENGTH(first_name) AS name_length
+        FROM employees;
+Explanation
+    LENGTH() returns the number of bytes, which is fine for ASCII characters. If the data contains multi-byte characters (e.g.,     accented letters or non-Latin characters), use CHAR_LENGTH() instead for character count:
+
+29th Question
+    Extract the month from hire_date
+Query
+        SELECT 
+            first_name,
+            last_name,
+            hire_date,
+            MONTH(hire_date) AS hire_month
+        FROM employees;
+Explanation
+    MONTH(hire_date) is used to extract the numeric month (1–12) from the date.
+
+30th Question
+    Show current system date and time
+Query
+        SELECT NOW() AS current_datetime;
+Explanation
+    This function brings the datetime value that contains both the date and time of the computer where the SQL Server instance runs. The output format is yyyy-mm-dd hh:mm:ss.
+
+31st Question
+    Round all salaries to 2 decimal places
+Query
+        SELECT 
+            first_name,
+            last_name,
+            ROUND(salary, 2) AS rounded_salary
+        FROM employees;
+Explanation
+    ROUND(salary, 2) rounds the salary to 2 decimal places. It is useful for the salaries stored with more precision than needed for display.
+
+32nd Question
+    Show salary difference between highest and lowest paid employee
+Query
+        SELECT 
+            MAX(salary) - MIN(salary) AS salary_difference
+        FROM employees;
+Explanation
+    MAX(salary) shows the highest salary. MIN(salary) shows the lowest salary. The subtraction gives the difference between high and low.
+
+33rd Question
+    Display absolute difference in salaries between two employees
+Query
+        SELECT 
+            ABS(e1.salary - e2.salary) AS salary_difference
+        FROM employees e1
+        JOIN employees e2
+            ON e1.first_name = 'Naga' AND e2.first_name = 'Mani';
+Explanation
+    e1 and e2 are two instances of the employees table. ABS(e1.salary - e2.salary) gives the difference between their salaries.
+
+34th Question
+     Show all employees whose name contains the letter 'e'
+Query
+        SELECT *
+        FROM employees
+        WHERE first_name LIKE '%e%' OR last_name LIKE '%e%';
+Explanation
+    '%' is used to matche the number of characters. '%e%' means the letter 'e' can appear anywhere in the name. The OR condition checks both first_name and last_name.
+
+35th Question
+    List employees with salary between 50000 and 80000
+Query
+        SELECT *
+        FROM employees
+        WHERE salary BETWEEN 50000 AND 80000;
+Explanation
+    It includes the salaries greater than or equal to 50000 and less than or equal to 80000
+
+36th Question
+    Create a table named 'projects' with columns: id, name, start_date
+Query
+        CREATE TABLE projects (
+            id INT PRIMARY KEY,
+            name VARCHAR(100),
+            start_date DATE
+        );
+Explanation
+    id: a unique integer for each project (primary key). name: a string column up to 100 characters for the project name. start_date: is used to store the project's start date in YYYY-MM-DD format
+
+
+
+
+
+
+    
+    
+
+
+
 
 
 
