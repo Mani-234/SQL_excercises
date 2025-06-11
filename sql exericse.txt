@@ -1,1 +1,163 @@
-sql query
+1. Write a query to select all columns from the 'employees' table.
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    position VARCHAR(100),
+    department VARCHAR(100),
+    salary DECIMAL(10, 2),
+    hire_date DATE
+);
+
+INSERT INTO employees (id, first_name, last_name, position, department, salary, hire_date) VALUES
+(1, 'Mani', 'Ganjala', 'Software Engineer', 'IT', 85000.00, '2020-03-15'),
+(2, 'Keerthi', 'Ganjala', 'Project Manager', 'Operations', 95000.00, '2018-07-22'),
+(3, 'Kushal', 'Ganjala', 'Data Analyst', 'Marketing', 72000.00, '2019-11-03'),
+(4, 'Aji', 'Ganjala', 'HR Specialist', 'Human Resources', 60000.00, '2021-01-10'),
+(5, 'Naga', 'Ganjala', 'Sales Executive', 'Sales', 67000.00, '2022-05-30');
+Query:
+    SELECT * FROM employees;
+EXPLANATION:
+    We are selecting all the data from the employees
+
+2nd Question
+  Write a query to select 'first_name' and 'salary' from 'employees' where salary > 50000.
+Query
+    SELECT first_name, salary
+    FROM employees
+    WHERE salary > 50000;
+Explaination
+  Select is used to select the first name of the employee and from is used to select from the employees salary 50000
+
+3rd Question
+  Retrieve all records from the 'departments' table where department_name is 'Sales'.
+Query
+    SELECT * 
+    FROM departments
+    WHERE department_name = 'Sales';
+Explaination
+    Select is used to select from the particular department and where is used to filter the data on specific condition and ='' is used to select the data from the respective department
+
+4th Question
+  List all employees whose names start with 'A'.
+Query
+    SELECT *
+    FROM employees
+    WHERE first_name LIKE 'A%';
+Explaination
+    A% is used to match a string
+    % is a wildcard for any number of characters
+
+5th Question
+  Display unique job titles from the 'jobs' table.
+Query
+    SELECT DISTINCT job_title
+    FROM jobs;
+Explaination
+  This query will return a list of all different (unique) job titles from the jobs table
+
+6th Question
+  Count how many employees are in each department
+Query
+    SELECT department, COUNT(*) AS employee_count
+    FROM employees
+    GROUP BY department;
+Explaination
+  COUNT(*) is uesd to counts all employees in each department. GROUP BY department groups the results by the department name.
+  employee_count is used for the count column
+
+7th Question
+  Find the average salary in each department
+Query
+    SELECT department, AVG(salary) AS average_salary
+    FROM employees
+    GROUP BY department;
+Explaination
+  AVG(salary) calculates the average salary from the table. Group By department is used to group the results department wise. average_salary is used to count the average salary column.
+
+8th Question
+ List employees ordered by hire_date descending
+Query
+    SELECT *
+    FROM employees
+    ORDER BY hire_date DESC;
+Explaination
+  hire_date DESC; is used to show all the employees with the most recently hired ones at the top
+
+9th Question
+  Write a query to find employees with NULL commission_pct
+Query
+    SELECT *
+    FROM employees
+    WHERE commission_pct IS NULL;
+Explaination
+  IS NULL is used to check for NULL values, not = NULL
+
+10th Question
+  Retrieve all departments that have more than 5 employees
+Query
+    SELECT department, COUNT(*) AS employee_count
+    FROM employees
+    GROUP BY department
+    HAVING COUNT(*) > 5;
+Explaination
+  GROUP BY department groups employees by department. HAVING COUNT(*) > 5 filters groups with more than 5 employees.
+
+11th Question
+  Write an INNER JOIN between 'employees' and 'departments' on department_id
+Query
+    SELECT e.*, d.*
+    FROM employees e
+    INNER JOIN departments d ON e.department_id = d.department_id;
+Explaination
+  e and d are table aliases for easier reference. The join matches rows where employees.department_id equals       departments.department_id.The query selects all columns from both tables (e.*, d.*).
+
+12th Question
+  Use LEFT JOIN to find employees even if they are not assigned to any department
+Query
+    SELECT e.*, d.*
+    FROM employees e
+    LEFT JOIN departments d ON e.department_id = d.department_id;
+Explaination
+  Returns all employees (e).Joins matching departments (d) where department_id matches. For employees without a department, the department columns will be NULL.
+
+13th Question 
+  List employee names along with their manager names using a self join
+Query
+    SELECT 
+    e.first_name AS employee_first_name,
+    e.last_name AS employee_last_name,
+    m.first_name AS manager_first_name,
+    m.last_name AS manager_last_name
+    FROM employees e
+    LEFT JOIN employees m ON e.manager_id = m.id;
+Explaination
+  e is used for the employee. m is used for the manager (also from the same employees table).The LEFT JOIN ensures employees without a manager still appear (with NULL manager names).
+
+14th Question
+  Write a query using RIGHT JOIN between 'jobs' and 'employees'
+Query
+    SELECT j.*, e.*
+    FROM jobs j
+    RIGHT JOIN employees e ON j.job_id = e.job_id;
+Explaination
+  Returns all employees (right table). Includes matching jobs from the jobs table. If an employee’s job_id doesn’t match any in jobs, job columns will be NULL.
+
+15th Question
+  Perform a FULL OUTER JOIN between 'departments' and 'employees'. (simulate in MySQL)
+Query
+
+
+
+16th Question
+  Show total salary paid per job_id
+
+
+
+
+
+
+
+
+
+
