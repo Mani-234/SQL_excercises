@@ -17,7 +17,7 @@ INSERT INTO employees (id, first_name, last_name, position, department, salary, 
 (5, 'Naga', 'Ganjala', 'Sales Executive', 'Sales', 67000.00, '2022-05-30');
 Query:
     SELECT * FROM employees;
-EXPLANATION:
+Explanation:
     We are selecting all the data from the employees
 
 2nd Question
@@ -26,7 +26,7 @@ Query
     SELECT first_name, salary
     FROM employees
     WHERE salary > 50000;
-Explaination
+Explanation
   Select is used to select the first name of the employee and from is used to select from the employees salary 50000
 
 3rd Question
@@ -35,7 +35,7 @@ Query
     SELECT * 
     FROM departments
     WHERE department_name = 'Sales';
-Explaination
+Explanation
     Select is used to select from the particular department and where is used to filter the data on specific condition and ='' is used to select the data from the respective department
 
 4th Question
@@ -44,7 +44,7 @@ Query
     SELECT *
     FROM employees
     WHERE first_name LIKE 'A%';
-Explaination
+Explanation
     A% is used to match a string
     % is a wildcard for any number of characters
 
@@ -53,7 +53,7 @@ Explaination
 Query
     SELECT DISTINCT job_title
     FROM jobs;
-Explaination
+Explanation
   This query will return a list of all different (unique) job titles from the jobs table
 
 6th Question
@@ -62,7 +62,7 @@ Query
     SELECT department, COUNT(*) AS employee_count
     FROM employees
     GROUP BY department;
-Explaination
+Explanation
   COUNT(*) is uesd to counts all employees in each department. GROUP BY department groups the results by the department name.
   employee_count is used for the count column
 
@@ -72,7 +72,7 @@ Query
     SELECT department, AVG(salary) AS average_salary
     FROM employees
     GROUP BY department;
-Explaination
+Explanation
   AVG(salary) calculates the average salary from the table. Group By department is used to group the results department wise. average_salary is used to count the average salary column.
 
 8th Question
@@ -81,7 +81,7 @@ Query
     SELECT *
     FROM employees
     ORDER BY hire_date DESC;
-Explaination
+Explanation
   hire_date DESC; is used to show all the employees with the most recently hired ones at the top
 
 9th Question
@@ -90,7 +90,7 @@ Query
     SELECT *
     FROM employees
     WHERE commission_pct IS NULL;
-Explaination
+Explanation
   IS NULL is used to check for NULL values, not = NULL
 
 10th Question
@@ -100,7 +100,7 @@ Query
     FROM employees
     GROUP BY department
     HAVING COUNT(*) > 5;
-Explaination
+Explanation
   GROUP BY department groups employees by department. HAVING COUNT(*) > 5 filters groups with more than 5 employees.
 
 11th Question
@@ -109,7 +109,7 @@ Query
     SELECT e.*, d.*
     FROM employees e
     INNER JOIN departments d ON e.department_id = d.department_id;
-Explaination
+Explanation
   e and d are table aliases for easier reference. The join matches rows where employees.department_id equals       departments.department_id.The query selects all columns from both tables (e.*, d.*).
 
 12th Question
@@ -118,7 +118,7 @@ Query
     SELECT e.*, d.*
     FROM employees e
     LEFT JOIN departments d ON e.department_id = d.department_id;
-Explaination
+Explanation
   Returns all employees (e).Joins matching departments (d) where department_id matches. For employees without a department, the department columns will be NULL.
 
 13th Question 
@@ -131,7 +131,7 @@ Query
     m.last_name AS manager_last_name
     FROM employees e
     LEFT JOIN employees m ON e.manager_id = m.id;
-Explaination
+Explanation
   e is used for the employee. m is used for the manager (also from the same employees table).The LEFT JOIN ensures employees without a manager still appear (with NULL manager names).
 
 14th Question
@@ -140,14 +140,23 @@ Query
     SELECT j.*, e.*
     FROM jobs j
     RIGHT JOIN employees e ON j.job_id = e.job_id;
-Explaination
+Explanation
   Returns all employees (right table). Includes matching jobs from the jobs table. If an employee’s job_id doesn’t match any in jobs, job columns will be NULL.
 
 15th Question
   Perform a FULL OUTER JOIN between 'departments' and 'employees'. (simulate in MySQL)
 Query
-
-
+        SELECT *
+        FROM departments LEFT JOIN employees
+        ON departments.dept_id = employees.dept_id
+        UNION
+        SELECT *
+        FROM departments RIGHT JOIN employees
+        ON departments.dept_id = employees.dept_id;
+Explanation
+    Select is used to select all columns from both tables. FROM departments LEFT JOIN employees ON departments.dept_id =     employees.dept_id: This performs a LEFT JOIN, returning all rows from departments and matching rows from employees.
+UNION: is used to combine the results of the LEFT JOIN and the RIGHT JOIN. FROM departments RIGHT JOIN employees ON departments.dept_id = employees.dept_id: This performs a RIGHT JOIN, returning all rows from employees and matching rows from departments.
+ON departments.dept_id = employees.dept_id: This specifies the join condition based on the common column dept_id
 
 16th Question
     Show total salary paid per job_id
@@ -155,7 +164,7 @@ Query
         SELECT job_id, SUM(salary) AS total_salary
         FROM employees
         GROUP BY job_id;
-Explaination
+Explanation
     SUM(salary) calculates the total salary per job. GROUP BY job_id groups employees by their job.
 
 17th Question
@@ -166,7 +175,7 @@ Query
         GROUP BY department
         ORDER BY total_salary DESC
         LIMIT 1;
-Explaination
+Explanation
     SUM(salary) calculates total salary per department. GROUP BY department groups employees by department. ORDER BY total_salary DESC sorts departments by total salary in descending order. LIMIT 1 returns the top department only.
 
 18th Question
@@ -176,13 +185,110 @@ Query
         FROM employees
         GROUP BY department
         HAVING AVG(salary) > 60000;
-Explaination
+Explanation
     AVG(salary) calculates the average salary per department. GROUP BY department groups results by department. HAVING filters those       groups where the average salary is greater than 60,000.
 
 19th Question
     Count number of employees in each job group
 Query
-        
+        SELECT job_id, COUNT(*) AS employee_count
+        FROM employees
+        GROUP BY job_id;
+Explanation
+    COUNT(*) is used to count the number of employees in each group. GROUP BY job_id or GROUP BY position groups employees by job. The  employee_count labels the result column.
+
+20th Question
+    List all job titles with their maximum and minimum salary
+Query
+        SELECT 
+        position AS job_title,
+        MAX(salary) AS max_salary,
+        MIN(salary) AS min_salary
+        FROM employees
+        GROUP BY position;
+Explanation
+        MAX(salary) gets the highest salary for each job title. MIN(salary) gets the lowest salary for each job title. GROUP BY position groups the data by job title.
+
+21st Question
+    Find employees earning more than the average salary
+Query
+        SELECT *
+        FROM employees
+        WHERE salary > (
+        SELECT AVG(salary)
+        FROM employees
+        );
+Explanation
+    (SELECT AVG(salary) FROM employees) calculates the average salary across all employees. ); is used to calculate the employees whose salary is greater than that value.
+
+22nd Question
+    List departments where the maximum salary is over 100000
+Query
+        SELECT department, MAX(salary) AS max_salary
+        FROM employees
+        GROUP BY department
+        HAVING MAX(salary) > 100000;
+Explanation
+    MAX(salary) finds the highest salary in each department. GROUP BY department groups employees by department. HAVING MAX(salary) > 100000 is used to filter the salary only above 100000.
+
+23rd Question
+    Get names of employees who work in the same department as 'John'
+Query
+        SELECT first_name, last_name
+        FROM employees
+        WHERE department = (
+            SELECT department
+            FROM employees
+            WHERE first_name = 'John'
+        )
+        AND first_name <> 'John';
+Explanation
+    The sub query ( finds the first_name = 'John'. The outer query ) selects other employees in that same department. AND first_name <> 'John' excludes John from the result.
+
+24th Question
+    List employees who are not managers (no one reports to them)
+Query
+        SELECT *
+        FROM employees
+        WHERE id NOT IN (
+            SELECT DISTINCT manager_id
+            FROM employees
+            WHERE manager_id IS NOT NULL
+        );
+Explanation
+    The subquery gets all manager_id values (people who are managers). The outer query selects employees whose id is not in that list — i.e., not managers.
+
+25th Question
+    Find employees hired before their managers
+Query
+        SELECT 
+        e.first_name AS employee_first_name,
+        e.last_name AS employee_last_name,
+        e.hire_date AS employee_hire_date,
+        m.first_name AS manager_first_name,
+        m.last_name AS manager_last_name,
+        m.hire_date AS manager_hire_date
+    FROM employees e
+    JOIN employees m ON e.manager_id = m.id
+    WHERE e.hire_date < m.hire_date;
+Explanation
+    e = employee. m = manager. JOIN matches employees to their managers using manager_id. WHERE e.hire_date < m.hire_date filters for employees hired before their managers.
+
+26th Question
+    Display employee names in uppercase
+Query
+        SELECT 
+            UPPER(first_name) AS first_name_upper,
+            UPPER(last_name) AS last_name_upper
+        FROM employees;
+Explanation
+    UPPER(column_name) converts text to uppercase. You can also concatenate full names if needed:
+
+
+
+
+
+      
     
 
 
