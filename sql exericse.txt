@@ -416,7 +416,155 @@ Explanation:
 41st Question
     Start a transaction, update an employee's salary, then rollback
 Query
+        -- Start the transaction
+        BEGIN;
+
+        -- Update an employee's salary (example: employee with ID = 101)
+        UPDATE employees
+        SET salary = salary + 1000
+        WHERE employee_id = 101;
+
+        -- Check the update (optional)
+        SELECT * FROM employees WHERE employee_id = 101;
+
+        -- Roll back the transaction
+        ROLLBACK;
+Explanation
+    BEGIN; starts the transaction. The UPDATE modifies the employee's salary. ROLLBACK; undoes the changes made during the transaction, leaving the data unchanged.
+
+42nd Question
+    Use COMMIT to save changes after updating the 'departments' table
+Query
+        -- Start the transaction
+        BEGIN;
+
+        -- Update the departments table (example: change department name)
+        UPDATE departments
+        SET department_name = 'Marketing & Communications'
+        WHERE department_id = 3;
+
+        -- Save the changes
+        COMMIT;
+Explanation
+    BEGIN; starts the transaction. UPDATE changes data in the departments table. COMMIT; makes the changes permanent in the database.
+
+43rd Question
+    Explain a use case for SAVEPOINT and demonstrate it with queries
+Query
+        -- Start transaction
+        BEGIN;
+        UPDATE employees
+        SET salary = salary + 2000
+        WHERE employee_id = 101;
+        -- Create a SAVEPOINT after salary update
+        SAVEPOINT after_salary_update;
+        INSERT INTO change_logs (employee_id, action)
+        VALUES (101, NULL);  -- This would cause an error
+        ROLLBACK TO after_salary_update;
+        UPDATE employees
+        SET department_id = 5
+        WHERE employee_id = 101;
+        COMMIT;
+Explanation
+        SAVEPOINT is used when you want to partially roll back a transaction to a specific point, without undoing the entire transaction. This is useful in complex operations where you may want to recover from an error or bad input without losing all progress made in the transaction
+
+44th Question
+    Create a view for employees with salary > 70000
+Query
+        CREATE VIEW high_salary_employees AS
+        SELECT *
+        FROM employees
+        WHERE salary > 70000;
+Explanation
+    This will show all columns (SELECT *) from the employees table for employees earning more than 70,000.
+
+45th Question
+    Drop the view 'high_salary_employees'
+Query
+        DROP VIEW high_salary_employees;
+Explanation
+    DROP VIEW is used to remove views from a database. 'high salary employees': It's enclosed in single quotes to handle potential spaces or special characters in the view name.
+
+46th Question
+    Create an index on 'last_name' in 'employees' table
+Query
+        CREATE INDEX idx_last_name
+        ON employees (last_name);
+Explanation
+    idx_last_name is the name of the index. This improves performance for queries filtering or sorting by last_name.
+
+47th Question
+     Drop the index from 'employees' table
+Query
+        DROP INDEX idx_last_name ON employees;
+Explanation
+    Removes the index named idx_last_name from the employees table. After this, queries filtering or sorting by last_name may become slower if the index was actively used.
+
+48th Question
+    Use ROW_NUMBER() to rank employees by salary within each department
+Quey
+        SELECT 
+            employee_id,
+            name,
+            department_id,
+            salary,
+            ROW_NUMBER() OVER (
+                PARTITION BY department_id
+                ORDER BY salary DESC
+            ) AS salary_rank
+        FROM employees;
+Explanation
+    PARTITION BY department_id: groups rows by department. ORDER BY salary DESC: ranks employees from highest to lowest salary within each department. ROW_NUMBER(): assigns a unique rank starting from 1 for each group.
+
+49th Question
+    Use RANK() to identify top 3 earners per department
+Query
+        WITH RankedEmployees AS (
+            SELECT 
+                employee_id,
+                name,
+                department_id,
+                salary,
+                RANK() OVER (
+                    PARTITION BY department_id
+                    ORDER BY salary DESC
+                ) AS salary_rank
+            FROM employees
+        )
+        SELECT *
+        FROM RankedEmployees
+        WHERE salary_rank <= 3;
+Explanation
+    RANK() assigns the same rank to employees with tied salaries. PARTITION BY department_id restarts the ranking for each department. WHERE salary_rank <= 3 filters the top 3 earners per department (including ties).
+
+50th Question
+    Use DENSE_RANK() for same salary employees
+Query
+        WITH RankedEmployees AS (
+            SELECT 
+                employee_id,
+                name,
+                department_id,
+                salary,
+                DENSE_RANK() OVER (
+                    PARTITION BY department_id
+                    ORDER BY salary DESC
+                ) AS salary_rank
+            FROM employees
+        )
+        SELECT *
+        FROM RankedEmployees
+        WHERE salary_rank <= 3;
+Explanation
+    DENSE_RANK() gives consecutive ranks even when there are ties. Tied employees will have the same rank. We will still get up to 3 distinct salary levels per department, including all employees tied at each level.
+
+
+
+
+
     
+
+
 
 
 
