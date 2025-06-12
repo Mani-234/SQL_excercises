@@ -382,6 +382,41 @@ Query
 Explanation
     id: a unique integer for each project (primary key). name: a string column up to 100 characters for the project name. start_date: is used to store the project's start date in YYYY-MM-DD format
 
+37th Question
+    Add a NOT NULL constraint to 'start_date' in 'projects'
+Query:
+        ALTER TABLE projects
+        MODIFY start_date DATE NOT NULL;
+Explanation:
+    This query modifies the `start_date` column in the `projects` table to add a `NOT NULL` constraint, ensuring every project must have a start date.
+
+38th Question
+    Insert a record into 'projects' table.
+Query:
+        INSERT INTO projects (id, name, start_date)
+        VALUES (1, 'Project Alpha', '2025-06-12');
+Explanation:
+     query inserts a new project record with id 1 name Project Alpha and start date June 12 2025 into the projects table.
+
+39th Question
+    Delete a project with id = 3 from 'projects'.
+Query:
+        DELETE FROM projects WHERE id = 3;
+Explanation:
+    query deletes the project record from the projects table where the id is 3.
+
+40th Question
+    Alter 'projects' to add column 'status' with default 'active'.
+Query:
+    ALTER TABLE projects
+    ADD COLUMN status VARCHAR(20) DEFAULT 'active';
+Explanation:
+    query adds a new column status to the projects table with a default value of active for all existing and new records.
+
+41st Question
+    Start a transaction, update an employee's salary, then rollback
+Query
+    
 
 
 
